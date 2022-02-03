@@ -32,6 +32,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  bloc: ^7.2.1
+  flutter_bloc: ^7.3.0
 
   #firebase
   firebase_core: ^1.12.0
@@ -64,6 +66,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
+  fonts:
+    - family: Jannah
+      fonts:
+        - asset: assets/fonts/jannah.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
