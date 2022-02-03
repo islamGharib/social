@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:social_app/modules/shop_login/social_login_screen.dart';
 import 'package:social_app/shared/styles/themes.dart';
 
 void main() async{
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
-      home: Scaffold(),
+      home: SocialLoginScreen(),
     );
   }
 }
