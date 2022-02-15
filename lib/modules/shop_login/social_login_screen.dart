@@ -23,6 +23,14 @@ class SocialLoginScreen extends StatelessWidget {
         listener: (context, state){
           if (state is SocialLoginSuccessState)
             navigateAndFinish(context, SocialLayoutScreen());
+          if(state is SocialLoginErrorState)
+            if(state.error.code == 'invalid-email' || state.error.code == 'wrong-password' || state.error.code == 'user-not-found')
+              showFlutterToast(message: 'Wrong email address or password.', state: ToastStates.ERROR);
+            else if(state.error.code == 'user-disabled')
+              showFlutterToast(message: 'This account is disabled.', state: ToastStates.ERROR);
+
+
+
         },
         builder: (context,state){
           SocialLoginCubit loginCubit = SocialLoginCubit.get(context);
