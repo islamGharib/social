@@ -2,8 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/models/social_users_model.dart';
 import 'package:social_app/modules/shop_register/cubit/states.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SocialRegisterCubit extends Cubit<SocialRegisterState>{
   SocialRegisterCubit() : super(SocialRegisterInitialState());
@@ -23,10 +25,29 @@ class SocialRegisterCubit extends Cubit<SocialRegisterState>{
     ).then((value) {
       print(value.user!.email);
       print(value.user!.uid);
-      emit(SocialRegisterSuccessState());
+      userCreate(uId: value.user!.uid, name: name, email: email, phone: phone);
+      //emit(SocialRegisterSuccessState());
     }).catchError((error){
       print(error.toString());
       emit(SocialRegisterErrorState(error));
+    });
+
+  }
+
+  void userCreate(
+      {
+        required String uId,
+        required String name,
+        required String email,
+        required String phone,
+      }){
+    SocialUsersModel model = SocialUsersModel(uId, name, email, phone);
+
+    FirebaseFirestore.instance.collection('users').doc(uId).set(model.toMap()).then((value) {
+      emit(SocialCreateUserSuccessState());
+    }).catchError((error){
+      print(error.toString());
+      emit(SocialCreateUserErrorState(error));
     });
 
   }

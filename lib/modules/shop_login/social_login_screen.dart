@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app/layout/social_layout_screen.dart';
 import 'package:social_app/modules/shop_register/social_register_screen.dart';
 import 'package:social_app/shared/component/components.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,9 +22,7 @@ class SocialLoginScreen extends StatelessWidget {
       child: BlocConsumer<SocialLoginCubit,SocialLoginState>(
         listener: (context, state){
           if (state is SocialLoginSuccessState)
-            showFlutterToast(message: 'Done', state: ToastStates.SUCCESS);
-          else
-            showFlutterToast(message: 'email or password is not correct', state: ToastStates.ERROR);
+            navigateAndFinish(context, SocialLayoutScreen());
         },
         builder: (context,state){
           SocialLoginCubit loginCubit = SocialLoginCubit.get(context);
@@ -94,7 +93,7 @@ class SocialLoginScreen extends StatelessWidget {
 
                         SizedBox(height: 15,),
                         ConditionalBuilder(
-                          condition: true,
+                          condition: state is! SocialLoginLoadingState,
                           builder: (context) => defaultButton(
                             buttonPressed: (){
                               if(formKey.currentState!.validate()){

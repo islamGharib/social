@@ -2,8 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/modules/shop_login/cubit/states.dart';
-import 'package:social_app/modules/shop_login/social_login_screen.dart';
+import 'package:social_app/layout/social_layout_screen.dart';
 import 'package:social_app/shared/component/components.dart';
 
 import 'cubit/cubit.dart';
@@ -22,10 +21,8 @@ class SocialRegisterScreen extends StatelessWidget {
     return BlocProvider(create: (BuildContext context) => SocialRegisterCubit(),
       child: BlocConsumer<SocialRegisterCubit,SocialRegisterState>(
         listener: (context, state){
-          if (state is SocialRegisterSuccessState)
-            navigateAndFinish(context, SocialLoginScreen());
-          else
-            showFlutterToast(message: 'User is already existed', state: ToastStates.ERROR);
+          if (state is SocialCreateUserSuccessState)
+            navigateAndFinish(context, SocialLayoutScreen());
         },
         builder: (context,state){
           SocialRegisterCubit registerCubit = SocialRegisterCubit.get(context);
@@ -88,6 +85,8 @@ class SocialRegisterScreen extends StatelessWidget {
                             if (value == null || value.isEmpty){
                               return 'Password must not to be empty';
                             }
+                            if(value.length < 6)
+                              return 'Password must contain 6 characters minimum';
                             return null;
                           },
                           suffixPressed: (){
@@ -124,7 +123,7 @@ class SocialRegisterScreen extends StatelessWidget {
 
                         SizedBox(height: 15,),
                         ConditionalBuilder(
-                          condition: true,
+                          condition: state is! SocialRegisterLoadingState,
                           builder: (context) => defaultButton(
                             buttonPressed: (){
                               if(formKey.currentState!.validate()){
