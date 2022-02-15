@@ -23,6 +23,13 @@ class SocialRegisterScreen extends StatelessWidget {
         listener: (context, state){
           if (state is SocialCreateUserSuccessState)
             navigateAndFinish(context, SocialLayoutScreen());
+          if(state is SocialRegisterErrorState)
+            if(state.error.code == 'email-already-in-use')
+              showFlutterToast(message: 'This mail has already been registered.', state: ToastStates.ERROR);
+            else if(state.error.code == 'weak-password')
+              showFlutterToast(message: 'the password is not strong enough.', state: ToastStates.ERROR);
+            else if(state.error.code == 'invalid-email')
+              showFlutterToast(message: 'the email address is malformed.', state: ToastStates.ERROR);
         },
         builder: (context,state){
           SocialRegisterCubit registerCubit = SocialRegisterCubit.get(context);
@@ -85,8 +92,6 @@ class SocialRegisterScreen extends StatelessWidget {
                             if (value == null || value.isEmpty){
                               return 'Password must not to be empty';
                             }
-                            if(value.length < 6)
-                              return 'Password must contain 6 characters minimum';
                             return null;
                           },
                           suffixPressed: (){
