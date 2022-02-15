@@ -4,7 +4,7 @@ class SocialRegisterInitialState extends SocialRegisterState{}
 class SocialRegisterLoadingState extends SocialRegisterState{}
 class SocialRegisterSuccessState extends SocialRegisterState{}
 class SocialRegisterErrorState extends SocialRegisterState{
-  final String error;
+  final dynamic error;
   SocialRegisterErrorState(this.error);
 }
 class SocialRegisterChangePasswordVisibilityState extends SocialRegisterState{}
