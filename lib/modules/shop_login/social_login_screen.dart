@@ -5,6 +5,7 @@ import 'package:social_app/layout/social_layout_screen.dart';
 import 'package:social_app/modules/shop_register/social_register_screen.dart';
 import 'package:social_app/shared/component/components.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/shared/network/local/cach_helper.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
 
@@ -21,8 +22,11 @@ class SocialLoginScreen extends StatelessWidget {
     return BlocProvider(create: (BuildContext context) => SocialLoginCubit(),
       child: BlocConsumer<SocialLoginCubit,SocialLoginState>(
         listener: (context, state){
-          if (state is SocialLoginSuccessState)
+          if (state is SocialLoginSuccessState) {
+            CachHelper.saveData(key: 'uId', value: state.uId);
+            // print(state.uId);
             navigateAndFinish(context, SocialLayoutScreen());
+          }
           if(state is SocialLoginErrorState)
             if(state.error.code == 'invalid-email' || state.error.code == 'wrong-password' || state.error.code == 'user-not-found')
               showFlutterToast(message: 'Wrong email address or password.', state: ToastStates.ERROR);
