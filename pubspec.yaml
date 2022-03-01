@@ -76,6 +76,10 @@ flutter:
     - family: Jannah
       fonts:
         - asset: assets/fonts/jannah.ttf
+          weight: 700
+    - family: IconBroken
+      fonts:
+        - asset: assets/fonts/icons.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
