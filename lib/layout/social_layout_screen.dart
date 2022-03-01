@@ -21,35 +21,35 @@ class SocialLayoutScreen extends StatelessWidget {
             return Scaffold(
                 appBar: AppBar(
                   title: Text(
-                    'Home',
+                    'News Feed',
                   ),
                 ),
 
                 body: Column(
                   children: [
-                    if(!FirebaseAuth.instance.currentUser!.emailVerified)
-                      Container(
-                        color: Colors.amber.withOpacity(.6),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            children: [
-                              Icon(Icons.info_outline),
-                              SizedBox(width: 15.0,),
-                              Text('Please verify your email'),
-                              Spacer(),
-                              defaultTextButton(
-                                  func: (){
-                                    FirebaseAuth.instance.currentUser!.sendEmailVerification().then((value) {
-                                      showFlutterToast(message: 'Check your mail', state: ToastStates.SUCCESS);
-                                    }).catchError((error){});
-                                  },
-                                  text: 'SEND'
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    // if(!FirebaseAuth.instance.currentUser!.emailVerified)
+                    //   Container(
+                    //     color: Colors.amber.withOpacity(.6),
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //       child: Row(
+                    //         children: [
+                    //           Icon(Icons.info_outline),
+                    //           SizedBox(width: 15.0,),
+                    //           Text('Please verify your email'),
+                    //           Spacer(),
+                    //           defaultTextButton(
+                    //               func: (){
+                    //                 FirebaseAuth.instance.currentUser!.sendEmailVerification().then((value) {
+                    //                   showFlutterToast(message: 'Check your mail', state: ToastStates.SUCCESS);
+                    //                 }).catchError((error){});
+                    //               },
+                    //               text: 'SEND'
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
                   ],
                 )
             );
