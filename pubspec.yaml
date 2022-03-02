@@ -23,7 +23,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  bloc: ^7.2.1
+  flutter_bloc: ^7.3.0
+  fluttertoast: ^8.0.8
+  conditional_builder_null_safety: ^0.0.6
+  shared_preferences: ^2.0.6
+  hexcolor: ^2.0.5
 
+  #firebase
+  firebase_core: ^1.12.0
+  firebase_auth: ^3.3.6
+  cloud_firestore: ^3.1.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -32,16 +42,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  bloc: ^7.2.1
-  flutter_bloc: ^7.3.0
-  fluttertoast: ^8.0.8
-  conditional_builder_null_safety: ^0.0.6
-  shared_preferences: ^2.0.6
 
-  #firebase
-  firebase_core: ^1.12.0
-  firebase_auth: ^3.3.6
-  cloud_firestore: ^3.1.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -75,6 +76,10 @@ flutter:
     - family: Jannah
       fonts:
         - asset: assets/fonts/jannah.ttf
+          weight: 700
+    - family: IconBroken
+      fonts:
+        - asset: assets/fonts/icons.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

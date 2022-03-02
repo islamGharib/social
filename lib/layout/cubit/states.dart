@@ -7,3 +7,4 @@ class SocialGetUserErrorState extends SocialStates{
   final String error;
   SocialGetUserErrorState(this.error);
 }
+class SocialChangeNavigationBarState extends SocialStates{}
