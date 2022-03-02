@@ -15,46 +15,50 @@ class SocialLayoutScreen extends StatelessWidget {
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state){},
       builder: (context, state){
-        return ConditionalBuilder(
-          condition: SocialCubit.get(context).model != null,
-          builder: (context){
-            return Scaffold(
-                appBar: AppBar(
-                  title: Text(
-                    'News Feed',
-                  ),
-                ),
+        SocialCubit socialCubit = SocialCubit.get(context);
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              socialCubit.titles[socialCubit.currentIndex],
+            ),
+          ),
+          body: socialCubit.screens[socialCubit.currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: socialCubit.currentIndex,
+            onTap: (index){
+              socialCubit.changeShopBottomNavigationIndex(index);
+            },
+            items: socialCubit.bottomNavItems,
+          ),
 
-                body: Column(
-                  children: [
-                    // if(!FirebaseAuth.instance.currentUser!.emailVerified)
-                    //   Container(
-                    //     color: Colors.amber.withOpacity(.6),
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.symmetric(horizontal: 20),
-                    //       child: Row(
-                    //         children: [
-                    //           Icon(Icons.info_outline),
-                    //           SizedBox(width: 15.0,),
-                    //           Text('Please verify your email'),
-                    //           Spacer(),
-                    //           defaultTextButton(
-                    //               func: (){
-                    //                 FirebaseAuth.instance.currentUser!.sendEmailVerification().then((value) {
-                    //                   showFlutterToast(message: 'Check your mail', state: ToastStates.SUCCESS);
-                    //                 }).catchError((error){});
-                    //               },
-                    //               text: 'SEND'
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                  ],
-                )
-            );
-          },
-          fallback: (context) => Center(child: CircularProgressIndicator(),),
+          // body: Column(
+          //   children: [
+          //     // if(!FirebaseAuth.instance.currentUser!.emailVerified)
+          //     //   Container(
+          //     //     color: Colors.amber.withOpacity(.6),
+          //     //     child: Padding(
+          //     //       padding: const EdgeInsets.symmetric(horizontal: 20),
+          //     //       child: Row(
+          //     //         children: [
+          //     //           Icon(Icons.info_outline),
+          //     //           SizedBox(width: 15.0,),
+          //     //           Text('Please verify your email'),
+          //     //           Spacer(),
+          //     //           defaultTextButton(
+          //     //               func: (){
+          //     //                 FirebaseAuth.instance.currentUser!.sendEmailVerification().then((value) {
+          //     //                   showFlutterToast(message: 'Check your mail', state: ToastStates.SUCCESS);
+          //     //                 }).catchError((error){});
+          //     //               },
+          //     //               text: 'SEND'
+          //     //           ),
+          //     //         ],
+          //     //       ),
+          //     //     ),
+          //     //   ),
+          //   ],
+          // ),
+
         );
       },
     );
