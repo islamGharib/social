@@ -6,6 +6,7 @@ import 'package:social_app/shared/component/components.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:social_app/shared/styles/icon_broken.dart';
 
 
 class SocialLayoutScreen extends StatelessWidget {
@@ -21,6 +22,21 @@ class SocialLayoutScreen extends StatelessWidget {
             title: Text(
               socialCubit.titles[socialCubit.currentIndex],
             ),
+            actions: [
+              IconButton(
+                  onPressed: (){},
+                  icon: Icon(
+                      IconBroken.Notification
+                  ),
+              ),
+              IconButton(
+                onPressed: (){},
+                icon: Icon(
+                    IconBroken.Search
+                ),
+              ),
+
+            ],
           ),
           body: socialCubit.screens[socialCubit.currentIndex],
           bottomNavigationBar: BottomNavigationBar(
