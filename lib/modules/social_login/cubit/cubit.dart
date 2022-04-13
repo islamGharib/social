@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/modules/shop_login/cubit/states.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:social_app/modules/social_login/cubit/states.dart';
 
 class SocialLoginCubit extends Cubit<SocialLoginState>{
   SocialLoginCubit() : super(SocialLogininitialState());

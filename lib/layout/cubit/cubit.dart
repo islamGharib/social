@@ -54,6 +54,10 @@ class SocialCubit extends Cubit<SocialStates>{
         label: 'Chats'
     ),
     BottomNavigationBarItem(
+        icon: Icon(IconBroken.Paper_Upload),
+        label: 'Post'
+    ),
+    BottomNavigationBarItem(
         icon: Icon(IconBroken.Location),
         label: 'Users'
     ),
@@ -63,8 +67,12 @@ class SocialCubit extends Cubit<SocialStates>{
     ),
   ];
   void changeShopBottomNavigationIndex(int index){
-    currentIndex = index;
-    emit(SocialChangeNavigationBarState());
+    if(index == 2)
+      emit(SocialNewPostState());
+    else{
+      currentIndex = index;
+      emit(SocialChangeNavigationBarState());
+    }
   }
 
 }
