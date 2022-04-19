@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app/layout/cubit/cubit.dart';
 import 'package:social_app/layout/cubit/states.dart';
+import 'package:social_app/modules/new_post/new_post_screen.dart';
 import 'package:social_app/shared/component/components.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,10 @@ class SocialLayoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
-      listener: (context, state){},
+      listener: (context, state){
+        if(state is SocialNewPostState)
+          navigateTo(context, NewPostScreen());
+      },
       builder: (context, state){
         SocialCubit socialCubit = SocialCubit.get(context);
         return Scaffold(

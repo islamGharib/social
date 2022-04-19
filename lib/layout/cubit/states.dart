@@ -8,3 +8,4 @@ class SocialGetUserErrorState extends SocialStates{
   SocialGetUserErrorState(this.error);
 }
 class SocialChangeNavigationBarState extends SocialStates{}
+class SocialNewPostState extends SocialStates{}
