@@ -41,7 +41,15 @@ class SocialRegisterCubit extends Cubit<SocialRegisterState>{
         required String email,
         required String phone,
       }){
-    SocialUsersModel model = SocialUsersModel(uId, name, email, phone);
+    SocialUsersModel model = SocialUsersModel(
+        uId,
+        name,
+        email,
+        phone,
+        'https://www.freepik.com/free-photo/photo-attractive-bearded-young-man-with-cherful-expression-makes-okay-gesture-with-both-hands-likes-something-dressed-red-casual-t-shirt-poses-against-white-wall-gestures-indoor_10421377.htm#query=photo%20attractive%20bearded%20young%20with%20cherful%20expression&position=0&from_view=search',
+        'https://img.freepik.com/free-photo/top-view-delicious-fried-chicken-with-seasonings-vegetables-dark-space_140725-75663.jpg?t=st=1650441415~exp=1650442015~hmac=72a60a663bbe759eb6b1dcd61e4d7b435c3ec4c94bc3e85972487861d27aa842&w=900',
+        'write your bio ...'
+    );
 
     FirebaseFirestore.instance.collection('users').doc(uId).set(model.toMap()).then((value) {
       emit(SocialCreateUserSuccessState());
