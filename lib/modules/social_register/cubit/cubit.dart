@@ -46,7 +46,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterState>{
         name,
         email,
         phone,
-        'https://www.freepik.com/free-photo/photo-attractive-bearded-young-man-with-cherful-expression-makes-okay-gesture-with-both-hands-likes-something-dressed-red-casual-t-shirt-poses-against-white-wall-gestures-indoor_10421377.htm#query=photo%20attractive%20bearded%20young%20with%20cherful%20expression&position=0&from_view=search',
+        'https://img.freepik.com/free-photo/photo-attractive-bearded-young-man-with-cherful-expression-makes-okay-gesture-with-both-hands-likes-something-dressed-red-casual-t-shirt-poses-against-white-wall-gestures-indoor_273609-16239.jpg?w=900&t=st=1651048373~exp=1651048973~hmac=6dd9e2197715157dd840863071fd8b7d5b09f04adb79fcd75b63560e58441db5',
         'https://img.freepik.com/free-photo/top-view-delicious-fried-chicken-with-seasonings-vegetables-dark-space_140725-75663.jpg?t=st=1650441415~exp=1650442015~hmac=72a60a663bbe759eb6b1dcd61e4d7b435c3ec4c94bc3e85972487861d27aa842&w=900',
         'write your bio ...'
     );
