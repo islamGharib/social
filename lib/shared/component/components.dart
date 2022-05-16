@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app/shared/styles/colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:social_app/shared/styles/icon_broken.dart';
 
 
 void navigateTo(context, widget) => Navigator.push(
@@ -123,3 +124,21 @@ Color chooseToastColor(ToastStates state){
   }
   return color;
 }
+
+AppBar defaultAppBar({
+  required BuildContext context,
+  String? title,
+  List<Widget>? actions,
+}) => AppBar(
+  leading: IconButton(
+    onPressed: (){
+      Navigator.pop(context);
+    },
+    icon: Icon(
+      IconBroken.Arrow___Left_2
+    ),
+  ),
+  title: (title != null) ? Text(title) : Text(''),
+  titleSpacing: 5.0,
+  actions: actions,
+);
