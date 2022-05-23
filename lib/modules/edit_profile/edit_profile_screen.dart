@@ -19,6 +19,7 @@ class EditProfileScreen extends StatelessWidget {
       builder: (context, state){
         var userModel = SocialCubit.get(context).model;
         var profileImage = SocialCubit.get(context).profileImage;
+        var profileCover = SocialCubit.get(context).profileCover;
         nameController.text = userModel!.name;
         bioController.text = userModel.bio;
 
@@ -55,13 +56,15 @@ class EditProfileScreen extends StatelessWidget {
                                       topRight: Radius.circular(4.0),
                                     ),
                                     image: DecorationImage(
-                                      image: NetworkImage('${userModel.cover}'),
+                                      image: (profileCover == null) ? NetworkImage('${userModel.cover}') : FileImage(profileCover) as ImageProvider,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
                                 IconButton(
-                                    onPressed: (){},
+                                    onPressed: (){
+                                      SocialCubit.get(context).getProfileCover();
+                                    },
                                     icon: CircleAvatar(
                                       radius: 20.0,
                                       child: Icon(

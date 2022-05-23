@@ -83,8 +83,8 @@ class SocialCubit extends Cubit<SocialStates>{
   }
 
   final ImagePicker picker = ImagePicker();
-  File? profileImage;
 
+  File? profileImage;
   Future<void> getProfileImage() async{
     // Pick an image
     XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -93,6 +93,17 @@ class SocialCubit extends Cubit<SocialStates>{
       profileImage = File(pickedFile.path);
       emit(SocialProfileImagePickedSuccessState());
     }else emit(SocialProfileImagePickedErrorState());
+  }
+
+  File? profileCover;
+  Future<void> getProfileCover() async{
+    // Pick an image
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if(pickedFile != null){
+      profileCover = File(pickedFile.path);
+      emit(SocialProfileCoverPickedSuccessState());
+    }else emit(SocialProfileCoverPickedErrorState());
   }
 
 }
