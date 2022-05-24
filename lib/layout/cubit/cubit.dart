@@ -14,6 +14,7 @@ import 'package:social_app/modules/settings/settings_screen.dart';
 import 'package:social_app/modules/users/users_screen.dart';
 import 'package:social_app/shared/component/constants.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class SocialCubit extends Cubit<SocialStates>{
   SocialCubit() : super(SocialGetUserInitialState());
@@ -95,15 +96,51 @@ class SocialCubit extends Cubit<SocialStates>{
     }else emit(SocialProfileImagePickedErrorState());
   }
 
-  File? profileCover;
+  File? coverImage;
   Future<void> getProfileCover() async{
     // Pick an image
     XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if(pickedFile != null){
-      profileCover = File(pickedFile.path);
-      emit(SocialProfileCoverPickedSuccessState());
-    }else emit(SocialProfileCoverPickedErrorState());
+      coverImage = File(pickedFile.path);
+      emit(SocialCoverImagePickedSuccessState());
+    }else emit(SocialCoverImagePickedErrorState());
+  }
+
+  String profileImageUrl = '';
+  void uploadProfileImage(){
+    FirebaseStorage.instance.ref()
+        .child('users/${Uri.file(profileImage!.path)
+        .pathSegments.last}')
+        .putFile(profileImage!)
+    .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        emit(SocialUploadProfileImageSuccessState());
+        profileImageUrl = value;
+      }).catchError((error){
+        emit(SocialUploadProfileImageErrorState());
+      });
+    }).catchError((error){
+      emit(SocialUploadProfileImageErrorState());
+    });
+  }
+
+  String coverImageUrl = '';
+  void uploadCoverImage(){
+    FirebaseStorage.instance.ref()
+        .child('users/${Uri.file(coverImage!.path)
+        .pathSegments.last}')
+        .putFile(coverImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        emit(SocialUploadCoverImageSuccessState());
+        coverImageUrl = value;
+      }).catchError((error){
+        emit(SocialUploadCoverImageErrorState());
+      });
+    }).catchError((error){
+      emit(SocialUploadCoverImageErrorState());
+    });
   }
 
 }
