@@ -11,5 +11,11 @@ class SocialChangeNavigationBarState extends SocialStates{}
 class SocialNewPostState extends SocialStates{}
 class SocialProfileImagePickedSuccessState extends SocialStates{}
 class SocialProfileImagePickedErrorState extends SocialStates{}
-class SocialProfileCoverPickedSuccessState extends SocialStates{}
-class SocialProfileCoverPickedErrorState extends SocialStates{}
+class SocialCoverImagePickedSuccessState extends SocialStates{}
+class SocialCoverImagePickedErrorState extends SocialStates{}
+class SocialUploadProfileImageSuccessState extends SocialStates{}
+class SocialUploadProfileImageErrorState extends SocialStates{}
+class SocialUploadCoverImageSuccessState extends SocialStates{}
+class SocialUploadCoverImageErrorState extends SocialStates{}
+class SocialUpdateUserLoadingState extends SocialStates{}
+class SocialUpdateUserErrorState extends SocialStates{}
