@@ -20,8 +20,6 @@ class EditProfileScreen extends StatelessWidget {
       listener: (context, state){},
       builder: (context, state){
         var userModel = SocialCubit.get(context).userModel;
-        var profileImage = SocialCubit.get(context).profileImage;
-        var profileCover = SocialCubit.get(context).coverImage;
         nameController.text = userModel!.name;
         bioController.text = userModel.bio;
         phoneController.text = userModel.phone;

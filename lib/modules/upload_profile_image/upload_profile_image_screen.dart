@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/modules/edit_profile/edit_profile_screen.dart';
 import 'package:social_app/shared/component/components.dart';
-import 'package:social_app/shared/styles/icon_broken.dart';
-
 import '../../layout/cubit/cubit.dart';
 import '../../layout/cubit/states.dart';
 
