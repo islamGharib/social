@@ -7,21 +7,31 @@ import '../../layout/cubit/cubit.dart';
 import '../../layout/cubit/states.dart';
 
 class NewPostScreen extends StatelessWidget {
-  const NewPostScreen({Key? key}) : super(key: key);
+  var textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state){},
       builder: (context, state){
-        var userModel = SocialCubit.get(context).userModel;
         return Scaffold(
           appBar: defaultAppBar(
               context: context,
               title: 'Create Post',
               actions: [
                 defaultTextButton(
-                  func: (){},
+                  func: (){
+                    var now = DateTime.now();
+                    if(SocialCubit.get(context).postImage == null)
+                      SocialCubit.get(context).createPost(
+                          dateTime: now.toString(),
+                          text: textController.text
+                      );
+                    else SocialCubit.get(context).uploadPostImage(
+                        dateTime: now.toString(),
+                        text: textController.text
+                    );
+                  },
                   text: 'post'
                 ),
               ],
@@ -30,6 +40,10 @@ class NewPostScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
+                if(state is SocialCreatingPostLoadingState)
+                  LinearProgressIndicator(),
+                if(state is SocialCreatingPostLoadingState)
+                  SizedBox(height: 10.0,),
                 Row(
                   children: [
                     CircleAvatar(
@@ -50,17 +64,51 @@ class NewPostScreen extends StatelessWidget {
                 SizedBox(width: 15.0,),
                 Expanded(
                   child: TextFormField(
+                    controller: textController,
                     decoration: InputDecoration(
                         hintText: 'what is in your mind...',
                         border: InputBorder.none
                     ),
                   ),
                 ),
+                SizedBox(width: 20.0,),
+                if(SocialCubit.get(context).postImage != null)
+                  Stack(
+                    alignment: AlignmentDirectional.topEnd,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 140,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.0),
+                          image: DecorationImage(
+                            image: FileImage(SocialCubit.get(context).postImage!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: (){
+                          SocialCubit.get(context).removePostImage();
+                        },
+                        icon: CircleAvatar(
+                          radius: 20.0,
+                          child: Icon(
+                            Icons.close,
+                            size: 16.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                SizedBox(width: 20.0,),
                 Row(
                   children: [
                     Expanded(
                       child: TextButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          SocialCubit.get(context).getPostImage();
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
