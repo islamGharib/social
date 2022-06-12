@@ -1,72 +1,88 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/layout/cubit/cubit.dart';
+import 'package:social_app/layout/cubit/states.dart';
 import 'package:social_app/shared/styles/colors.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
+
+import '../../models/post_model.dart';
 
 class FeedsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Card(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              margin: EdgeInsets.all(8.0),
-              elevation: 5.0,
-              child: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  Image(
-                    image: NetworkImage('https://img.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg?t=st=1648470843~exp=1648471443~hmac=e627e64a2eec9d1abe3d9db23ecb082fc29cadb26da7ab313811130fb0bf4169&w=900'),
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Communicate with friends',
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                        color: Colors.white
+    return BlocConsumer<SocialCubit, SocialStates>(
+        listener: (context, state){},
+      builder: (context, state){
+          return Scaffold(
+            body: ConditionalBuilder(
+              condition: (SocialCubit.get(context).posts.length > 0),
+              builder: (context) => SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    Card(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      margin: EdgeInsets.all(8.0),
+                      elevation: 5.0,
+                      child: Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          Image(
+                            image: NetworkImage('https://img.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg?t=st=1648470843~exp=1648471443~hmac=e627e64a2eec9d1abe3d9db23ecb082fc29cadb26da7ab313811130fb0bf4169&w=900'),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Communicate with friends',
+                              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                                  color: Colors.white
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => buildPostItem(context, SocialCubit.get(context).posts[index]),
+                      separatorBuilder: (context, index) => SizedBox(height: 8.0,),
+                      itemCount: (SocialCubit.get(context).posts.length),
+                    ),
+                    SizedBox(height: 8.0,)
+
+
+                  ],
+                ),
               ),
+              fallback: (context) => Center(child: CircularProgressIndicator(),),
             ),
-            ListView.separated(
-              shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) => buildPostItem(context),
-                separatorBuilder: (context, index) => SizedBox(height: 8.0,),
-                itemCount: 10,
-            ),
-            SizedBox(height: 8.0,)
-
-
-          ],
-        ),
-      ),
+          );
+      },
     );
 
     
   }
 
-  Widget buildPostItem(context) => Card(
+  Widget buildPostItem(context, PostModel model) => Card(
     clipBehavior: Clip.antiAliasWithSaveLayer,
     margin: EdgeInsets.symmetric(horizontal: 8.0),
     elevation: 5.0,
     child: Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               CircleAvatar(
                 radius: 25.0,
-                backgroundImage: NetworkImage('https://img.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg?w=900&t=st=1648470621~exp=1648471221~hmac=5d68d8759c15a4f8263dbfd26868d59c79283309e4f5b28b3db7eeb44060414c'),
+                backgroundImage: NetworkImage('${model.image}'),
               ),
               SizedBox(width: 15.0,),
               Expanded(
@@ -76,7 +92,7 @@ class FeedsScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Islam Gharib',
+                          '${model.name}',
                           style: TextStyle(
                             height: 1.4,
                           ),
@@ -90,7 +106,7 @@ class FeedsScreen extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      'March 29 2022 at 12:00 pm',
+                      '${model.dateTime}',
                       style: Theme.of(context).textTheme.caption!.copyWith(
                         height: 1.4,
                       ),
@@ -119,166 +135,172 @@ class FeedsScreen extends StatelessWidget {
             ),
           ),
           Text(
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+            '${model.text}',
             style: Theme.of(context).textTheme.subtitle1,
           ),
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     bottom: 10,
+          //     top: 5,
+          //   ),
+          //   child: Container(
+          //     width: double.infinity,
+          //     child: Wrap(
+          //       children: [
+          //         Padding(
+          //           padding: const EdgeInsets.only(right: 6),
+          //           child: Container(
+          //             height: 25,
+          //             child: MaterialButton(
+          //               minWidth: 1,
+          //               padding: EdgeInsets.zero,
+          //               onPressed: (){},
+          //               child: Text(
+          //                 '#software',
+          //                 style: Theme.of(context).textTheme.caption!.copyWith(
+          //                     color: defaultColor
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //         Padding(
+          //           padding: const EdgeInsets.only(right: 6),
+          //           child: Container(
+          //             height: 25,
+          //             child: MaterialButton(
+          //               minWidth: 1,
+          //               padding: EdgeInsets.zero,
+          //               onPressed: (){},
+          //               child: Text(
+          //                 '#flutter',
+          //                 style: Theme.of(context).textTheme.caption!.copyWith(
+          //                     color: defaultColor
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //         Padding(
+          //           padding: const EdgeInsets.only(right: 6),
+          //           child: Container(
+          //             height: 25,
+          //             child: MaterialButton(
+          //               minWidth: 1,
+          //               padding: EdgeInsets.zero,
+          //               onPressed: (){},
+          //               child: Text(
+          //                 '#software',
+          //                 style: Theme.of(context).textTheme.caption!.copyWith(
+          //                     color: defaultColor
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //         Padding(
+          //           padding: const EdgeInsets.only(right: 6),
+          //           child: Container(
+          //             height: 25,
+          //             child: MaterialButton(
+          //               minWidth: 1,
+          //               padding: EdgeInsets.zero,
+          //               onPressed: (){},
+          //               child: Text(
+          //                 '#flutter',
+          //                 style: Theme.of(context).textTheme.caption!.copyWith(
+          //                     color: defaultColor
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //         Padding(
+          //           padding: const EdgeInsets.only(right: 6),
+          //           child: Container(
+          //             height: 25,
+          //             child: MaterialButton(
+          //               minWidth: 1,
+          //               padding: EdgeInsets.zero,
+          //               onPressed: (){},
+          //               child: Text(
+          //                 '#software',
+          //                 style: Theme.of(context).textTheme.caption!.copyWith(
+          //                     color: defaultColor
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //         Padding(
+          //           padding: const EdgeInsets.only(right: 6),
+          //           child: Container(
+          //             height: 25,
+          //             child: MaterialButton(
+          //               minWidth: 1,
+          //               padding: EdgeInsets.zero,
+          //               onPressed: (){},
+          //               child: Text(
+          //                 '#flutter',
+          //                 style: Theme.of(context).textTheme.caption!.copyWith(
+          //                     color: defaultColor
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //         Padding(
+          //           padding: const EdgeInsets.only(right: 6),
+          //           child: Container(
+          //             height: 25,
+          //             child: MaterialButton(
+          //               minWidth: 1,
+          //               padding: EdgeInsets.zero,
+          //               onPressed: (){},
+          //               child: Text(
+          //                 '#software',
+          //                 style: Theme.of(context).textTheme.caption!.copyWith(
+          //                     color: defaultColor
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //         Padding(
+          //           padding: const EdgeInsets.only(right: 6),
+          //           child: Container(
+          //             height: 25,
+          //             child: MaterialButton(
+          //               minWidth: 1,
+          //               padding: EdgeInsets.zero,
+          //               onPressed: (){},
+          //               child: Text(
+          //                 '#flutter',
+          //                 style: Theme.of(context).textTheme.caption!.copyWith(
+          //                     color: defaultColor
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          if (model.postImage != '')
           Padding(
-            padding: const EdgeInsets.only(
-              bottom: 10,
-              top: 5,
+            padding: const EdgeInsetsDirectional.only(
+              top: 15.0,
             ),
             child: Container(
               width: double.infinity,
-              child: Wrap(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Container(
-                      height: 25,
-                      child: MaterialButton(
-                        minWidth: 1,
-                        padding: EdgeInsets.zero,
-                        onPressed: (){},
-                        child: Text(
-                          '#software',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              color: defaultColor
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Container(
-                      height: 25,
-                      child: MaterialButton(
-                        minWidth: 1,
-                        padding: EdgeInsets.zero,
-                        onPressed: (){},
-                        child: Text(
-                          '#flutter',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              color: defaultColor
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Container(
-                      height: 25,
-                      child: MaterialButton(
-                        minWidth: 1,
-                        padding: EdgeInsets.zero,
-                        onPressed: (){},
-                        child: Text(
-                          '#software',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              color: defaultColor
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Container(
-                      height: 25,
-                      child: MaterialButton(
-                        minWidth: 1,
-                        padding: EdgeInsets.zero,
-                        onPressed: (){},
-                        child: Text(
-                          '#flutter',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              color: defaultColor
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Container(
-                      height: 25,
-                      child: MaterialButton(
-                        minWidth: 1,
-                        padding: EdgeInsets.zero,
-                        onPressed: (){},
-                        child: Text(
-                          '#software',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              color: defaultColor
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Container(
-                      height: 25,
-                      child: MaterialButton(
-                        minWidth: 1,
-                        padding: EdgeInsets.zero,
-                        onPressed: (){},
-                        child: Text(
-                          '#flutter',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              color: defaultColor
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Container(
-                      height: 25,
-                      child: MaterialButton(
-                        minWidth: 1,
-                        padding: EdgeInsets.zero,
-                        onPressed: (){},
-                        child: Text(
-                          '#software',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              color: defaultColor
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Container(
-                      height: 25,
-                      child: MaterialButton(
-                        minWidth: 1,
-                        padding: EdgeInsets.zero,
-                        onPressed: (){},
-                        child: Text(
-                          '#flutter',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
-                              color: defaultColor
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            height: 140,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.0),
-              image: DecorationImage(
-                image: NetworkImage('https://img.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg?t=st=1648470843~exp=1648471443~hmac=e627e64a2eec9d1abe3d9db23ecb082fc29cadb26da7ab313811130fb0bf4169&w=900'),
-                fit: BoxFit.cover,
+              height: 140,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4.0),
+                image: DecorationImage(
+                  image: NetworkImage('${model.postImage}'),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -299,7 +321,7 @@ class FeedsScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 5.0,),
                           Text(
-                            '120',
+                            '0',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],
@@ -322,7 +344,7 @@ class FeedsScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 5.0,),
                           Text(
-                            '120 comment',
+                            '0',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],
@@ -352,7 +374,7 @@ class FeedsScreen extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 18.0,
-                        backgroundImage: NetworkImage('https://img.freepik.com/free-photo/skeptical-woman-has-unsure-questioned-expression-points-fingers-sideways_273609-40770.jpg?w=900&t=st=1648470621~exp=1648471221~hmac=5d68d8759c15a4f8263dbfd26868d59c79283309e4f5b28b3db7eeb44060414c'),
+                        backgroundImage: NetworkImage('${SocialCubit.get(context).userModel!.image}'),
                       ),
                       SizedBox(width: 15.0,),
                       Text(
