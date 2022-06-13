@@ -37,3 +37,9 @@ class SocialGetPostsErrorState extends SocialStates{
   final String error;
   SocialGetPostsErrorState(this.error);
 }
+class SocialLikePostSuccessState extends SocialStates{}
+class SocialLikePostErrorState extends SocialStates{
+  final String error;
+  SocialLikePostErrorState(this.error);
+}
+
