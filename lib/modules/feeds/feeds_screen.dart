@@ -10,7 +10,7 @@ import 'package:social_app/shared/styles/icon_broken.dart';
 import '../../models/post_model.dart';
 
 class FeedsScreen extends StatelessWidget {
-
+  var commentTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
@@ -321,7 +321,7 @@ class FeedsScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 5.0,),
                           Text(
-                            '0',
+                            '${SocialCubit.get(context).likes[index]}',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],
