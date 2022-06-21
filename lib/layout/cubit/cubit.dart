@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/layout/cubit/states.dart';
+import 'package:social_app/models/post_model.dart';
 import 'package:social_app/models/social_users_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:social_app/modules/chats/chats_screen.dart';
@@ -292,4 +293,121 @@ class SocialCubit extends Cubit<SocialStates> {
     });
 
   }
+
+
+
+                        // posts
+  File? postImage;
+
+  Future<void> getPostImage() async {
+    // Pick an image
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      postImage = File(pickedFile.path);
+      emit(SocialPostImagePickedSuccessState());
+    } else
+      emit(SocialPostImagePickedErrorState());
+  }
+
+  void removePostImage(){
+    postImage = null;
+    emit(SocialRemovePostImageState());
+
+  }
+
+  void uploadPostImage({
+    required String dateTime,
+    required String text,
+  }) {
+    emit(SocialCreatingPostLoadingState());
+    FirebaseStorage.instance.ref()
+        .child('posts/${Uri
+        .file(postImage!.path)
+        .pathSegments
+        .last}')
+        .putFile(postImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        createPost(
+            dateTime: dateTime,
+            text: text,
+            postImage: value
+        );
+      }).catchError((error) {
+        emit(SocialUploadPostImageErrorState());
+      });
+    }).catchError((error) {
+      emit(SocialUploadPostImageErrorState());
+    });
+  }
+
+  void createPost({
+    required String dateTime,
+    required String text,
+    String? postImage,
+  }){
+    emit(SocialCreatingPostLoadingState());
+    PostModel model = PostModel(
+        userModel!.uId,
+        userModel!.name,
+        userModel!.image,
+        text,
+        postImage??'',
+        dateTime
+    );
+
+    FirebaseFirestore.instance.collection('posts')
+        .add(model.toMap())
+        .then((value) {
+      emit(SocialCreatingPostSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SocialCreatingPostErrorState());
+    });
+
+  }
+
+  List<PostModel> posts = [];
+  List<String> postsId = [];
+  List<int> likes = [];
+  void getPosts(){
+    FirebaseFirestore.instance
+        .collection('posts')
+        .get()
+        .then((value) {
+          value.docs.forEach((element) {
+            element.reference
+            .collection('Likes')
+            .get()
+            .then((value) {
+              //print(element.data().toString());
+              posts.add(PostModel.fromJson(element.data()));
+              postsId.add(element.id);
+              likes.add(value.docs.length);
+            }).catchError((error){
+              print(error.toString());
+            });
+          });
+          //print(posts[0].text);
+          emit(SocialGetPostsSuccessState());
+        }).catchError((error){
+          emit(SocialGetPostsErrorState(error.toString()));
+    });
+  }
+
+  void likePost(String postId){
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('Likes')
+        .doc(userModel!.uId)
+        .set({'like' : true})
+        .then((value) {
+          emit(SocialLikePostSuccessState());
+        }).catchError((error){
+          emit(SocialLikePostErrorState(error));
+    });
+  }
+
 }
