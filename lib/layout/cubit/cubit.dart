@@ -78,6 +78,8 @@ class SocialCubit extends Cubit<SocialStates> {
   ];
 
   void changeShopBottomNavigationIndex(int index) {
+    if(index == 1)
+      getAllUsers();
     if (index == 2)
       emit(SocialNewPostState());
     else {
@@ -412,18 +414,20 @@ class SocialCubit extends Cubit<SocialStates> {
 
   List<SocialUsersModel> users = [];
   void getAllUsers(){
-    FirebaseFirestore.instance
-        .collection('users')
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        users.add(SocialUsersModel.fromJson(element.data()));
+    if (users.length == 0)
+      FirebaseFirestore.instance
+          .collection('users')
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          if(element.data()['uId'] != userModel!.uId)
+            users.add(SocialUsersModel.fromJson(element.data()));
+        });
+        //print(posts[0].text);
+        emit(SocialGetAllUsersSuccessState());
+      }).catchError((error){
+        emit(SocialGetAllUsersErrorState(error.toString()));
       });
-      //print(posts[0].text);
-      emit(SocialGetAllUsersSuccessState());
-    }).catchError((error){
-      emit(SocialGetAllUsersErrorState(error.toString()));
-    });
   }
 
 }
