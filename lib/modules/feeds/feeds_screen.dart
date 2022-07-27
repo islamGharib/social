@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/cubit/cubit.dart';
 import 'package:social_app/layout/cubit/states.dart';
+import 'package:social_app/modules/comments/comments_screen.dart';
+import 'package:social_app/shared/component/components.dart';
 import 'package:social_app/shared/styles/colors.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
 
@@ -18,7 +20,7 @@ class FeedsScreen extends StatelessWidget {
       builder: (context, state){
           return Scaffold(
             body: ConditionalBuilder(
-              condition: (SocialCubit.get(context).userModel != null) && (SocialCubit.get(context).posts.length > 0),
+              condition: ((SocialCubit.get(context).posts.length > 0) && (SocialCubit.get(context).userModel != null)),
               builder: (context) => SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
@@ -383,7 +385,19 @@ class FeedsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  onTap: (){},
+                  onTap: (){
+                    // showCommenents(
+                    //   context,
+                    //   postId: SocialCubit.get(context).postsId[index],
+                    //   userId: model.uId,
+                    //   userImage: model.image
+                    // );
+                    navigateTo(context, CommentsScreen(
+                      SocialCubit.get(context).postsId[index],
+                      model.uId,
+                      model.image
+                    ));
+                  },
                 ),
               ),
               InkWell(
@@ -412,5 +426,6 @@ class FeedsScreen extends StatelessWidget {
       ),
     ),
   );
+
   
 }
