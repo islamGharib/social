@@ -7,6 +7,12 @@ class SocialGetUserErrorState extends SocialStates{
   final String error;
   SocialGetUserErrorState(this.error);
 }
+class SocialGetAllUsersLoadingState extends SocialStates{}
+class SocialGetAllUsersSuccessState extends SocialStates{}
+class SocialGetAllUsersErrorState extends SocialStates{
+  final String error;
+  SocialGetAllUsersErrorState(this.error);
+}
 class SocialChangeNavigationBarState extends SocialStates{}
 class SocialNewPostState extends SocialStates{}
 class SocialProfileImagePickedSuccessState extends SocialStates{}
