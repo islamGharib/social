@@ -20,7 +20,7 @@ class FeedsScreen extends StatelessWidget {
       builder: (context, state){
           return Scaffold(
             body: ConditionalBuilder(
-              condition: ((SocialCubit.get(context).posts.length > 0) && (SocialCubit.get(context).userModel != null)),
+              condition: ((SocialCubit.get(context).posts.length ) > 0) && ((SocialCubit.get(context).userModel) != null),
               builder: (context) => SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
