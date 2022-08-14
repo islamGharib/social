@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:social_app/layout/cubit/cubit.dart';
+import 'package:social_app/layout/cubit/states.dart';
 import 'package:social_app/shared/bloc_provider.dart';
 import 'package:social_app/shared/component/constants.dart';
 import 'package:social_app/shared/network/local/cach_helper.dart';
@@ -32,11 +33,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => SocialCubit()..getUserData()..getPosts()..getAllUsers(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: lightTheme,
-        home: widget,
+      create: (BuildContext context) => SocialCubit()..getUserData()..getPosts(),
+      child: BlocConsumer<SocialCubit, SocialStates>(
+        listener: (context, state){},
+        builder: (context, state){
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: lightTheme,
+            home: widget,
+          );
+        },
       ),
     );
   }

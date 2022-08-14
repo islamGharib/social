@@ -49,3 +49,9 @@ class SocialLikePostErrorState extends SocialStates{
   SocialLikePostErrorState(this.error);
 }
 
+// chat
+class SocialSendMessageSuccessState extends SocialStates{}
+class SocialSendMessageErrorState extends SocialStates{}
+class SocialGetMessagesSuccessState extends SocialStates{}
+class SocialGetMessagesErrorState extends SocialStates{}
+
