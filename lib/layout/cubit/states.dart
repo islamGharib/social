@@ -55,3 +55,15 @@ class SocialSendMessageErrorState extends SocialStates{}
 class SocialGetMessagesSuccessState extends SocialStates{}
 class SocialGetMessagesErrorState extends SocialStates{}
 
+// login
+class SocialLogininitialState extends SocialStates{}
+class SocialLoginLoadingState extends SocialStates{}
+class SocialLoginSuccessState extends SocialStates{
+  final String uId;
+  SocialLoginSuccessState(this.uId);
+}
+class SocialLoginErrorState extends SocialStates{
+  final dynamic error;
+  SocialLoginErrorState(this.error);
+}
+class SocialLoginChangePasswordVisibilityState extends SocialStates{}
