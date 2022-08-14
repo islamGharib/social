@@ -7,6 +7,9 @@ import 'package:social_app/modules/edit_profile/edit_profile_screen.dart';
 import 'package:social_app/shared/component/components.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
 
+import '../../shared/network/local/cach_helper.dart';
+import '../social_login/social_login_screen.dart';
+
 class SettingsScreen extends StatelessWidget {
 
   @override
@@ -158,7 +161,15 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
+                SizedBox(height: 10,),
+                defaultTextButton(
+                    func: (){
+                      CachHelper.clearData(key: 'uId');
+                      navigateAndFinish(context, SocialLoginScreen());
+                    },
+                    text: 'Logout'
+                ),
               ],
             ),
           ),
