@@ -16,55 +16,55 @@ class FeedsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
-        listener: (context, state){},
+      listener: (context, state){},
       builder: (context, state){
-          return Scaffold(
-            body: ConditionalBuilder(
-              condition: ((SocialCubit.get(context).posts.length ) > 0) && ((SocialCubit.get(context).userModel) != null),
-              builder: (context) => SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      margin: EdgeInsets.all(8.0),
-                      elevation: 5.0,
-                      child: Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          Image(
-                            image: NetworkImage('https://img.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg?t=st=1648470843~exp=1648471443~hmac=e627e64a2eec9d1abe3d9db23ecb082fc29cadb26da7ab313811130fb0bf4169&w=900'),
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Communicate with friends',
-                              style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                                  color: Colors.white
-                              ),
+        return Scaffold(
+          body: ConditionalBuilder(
+            condition: ((SocialCubit.get(context).posts.length ) > 0) && ((SocialCubit.get(context).userModel) != null),
+            builder: (context) => SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  Card(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    margin: EdgeInsets.all(8.0),
+                    elevation: 5.0,
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        Image(
+                          image: NetworkImage('https://img.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg?t=st=1648470843~exp=1648471443~hmac=e627e64a2eec9d1abe3d9db23ecb082fc29cadb26da7ab313811130fb0bf4169&w=900'),
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Communicate with friends',
+                            style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                                color: Colors.white
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => buildPostItem(context, SocialCubit.get(context).posts[index], index),
-                      separatorBuilder: (context, index) => SizedBox(height: 8.0,),
-                      itemCount: (SocialCubit.get(context).posts.length),
-                    ),
-                    SizedBox(height: 8.0,)
+                  ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => buildPostItem(context, SocialCubit.get(context).posts[index], index),
+                    separatorBuilder: (context, index) => SizedBox(height: 8.0,),
+                    itemCount: (SocialCubit.get(context).posts.length),
+                  ),
+                  SizedBox(height: 8.0,)
 
 
-                  ],
-                ),
+                ],
               ),
-              fallback: (context) => Center(child: CircularProgressIndicator(),),
             ),
-          );
+            fallback: (context) => Center(child: CircularProgressIndicator(),),
+          ),
+        );
       },
     );
 
@@ -346,7 +346,7 @@ class FeedsScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 5.0,),
                           Text(
-                            '0',
+                            '${SocialCubit.get(context).commentNumbers[index]}',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],
@@ -393,9 +393,8 @@ class FeedsScreen extends StatelessWidget {
                     //   userImage: model.image
                     // );
                     navigateTo(context, CommentsScreen(
+                      SocialCubit.get(context).posts[index],
                       SocialCubit.get(context).postsId[index],
-                      model.uId,
-                      model.image
                     ));
                   },
                 ),
