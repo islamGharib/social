@@ -55,6 +55,15 @@ class SocialSendMessageErrorState extends SocialStates{}
 class SocialGetMessagesSuccessState extends SocialStates{}
 class SocialGetMessagesErrorState extends SocialStates{}
 
+// comments
+class SocialSendCommentSuccessState extends SocialStates{}
+class SocialSendCommentErrorState extends SocialStates{}
+class SocialGetCommentsSuccessState extends SocialStates{}
+class SocialGetCommentsErrorState extends SocialStates{}
+class SocialGetNumberOfCommentsSuccessState extends SocialStates{}
+class SocialGetNumberOfCommentsErrorState extends SocialStates{}
+
+
 // login
 class SocialLogininitialState extends SocialStates{}
 class SocialLoginLoadingState extends SocialStates{}
